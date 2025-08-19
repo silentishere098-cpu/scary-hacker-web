@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCARY - Cyber Ghost</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Orbitron:wght@400;700;900&family=Press+Start+2P&family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --bg-dark: #0a001a; /* Deep cosmic purple-black */
+            --text-main: #ffdddd; /* Off-white with a hint of red */
+            --text-secondary: #aaaadd; /* Lighter, softer blue for secondary */
+            --neon-red: #ff0066;
+            --neon-red-glow: #ff4d99;
+            --neon-blue: #00c0ff;
+            --neon-blue-glow: #66dfff;
+            --font-heading: 'Orbitron', sans-serif; /* Futuristic, strong */
+            --font-code: 'Source Code Pro', monospace; /* Clean, developer feel */
+            --font-accent: 'Press Start 2P', cursive; /* Retro gaming/hacker vibe */
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --shadow-neon-red: rgba(255, 0, 102, 0.7);
+            --shadow-neon-blue: rgba(0, 192, 255, 0.6);
+        }
+
+        body {
+            font-family: var(--font-code); /* Changed to code font for general text */
+            font-size: 0.95em; /* Slightly smaller base font size */
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+            line-height: 1.6; /* Adjusted line height */
+            background: radial-gradient(ellipse at center, #1a002a 0%, var(--bg-dark) 70%);
+            animation: bg-pulsate 30s infinite alternate ease-in-out;
+        }
+        @keyframes bg-pulsate {
+            0% { background-position: center top; transform: scale(1); }
+            50% { background-position: center bottom; transform: scale(1.02); }
+            100% { background-position: center top; transform: scale(1); }
+        }
+
+        /* --- Loading Screen Styles --- */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #150020 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease-out;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .animated-element-img {
+            width: 130px; /* Slightly smaller */
+            height: 130px; /* Slightly smaller */
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px; /* Adjusted margin */
+            border: 4px solid var(--neon-red); /* Thinner border */
+            box-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); /* Smaller glow */
+            animation: img-glow-pulse 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes img-glow-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); opacity: 0.9; }
+            50% { transform: scale(1.03); box-shadow: 0 0 18px var(--neon-red), 0 0 35px var(--neon-red); opacity: 1; }
+            100% { transform: scale(1); box-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); opacity: 0.9; }
+        }
+
+        .progress-bar-container {
+            width: 320px; /* Slightly smaller */
+            height: 25px; /* Slightly smaller */
+            background-color: rgba(255, 0, 102, 0.2);
+            border-radius: 15px; /* Slightly less rounded */
+            border: 2px solid var(--neon-red); /* Thinner border */
+            box-shadow: 0 0 10px var(--neon-red), inset 0 0 5px var(--neon-red); /* Smaller glow */
+            overflow: hidden;
+            animation: bar-pulse 2s infinite alternate ease-in-out;
+        }
+        @keyframes bar-pulse {
+            0% { box-shadow: 0 0 10px var(--neon-red), inset 0 0 5px var(--neon-red); }
+            100% { box-shadow: 0 0 20px var(--neon-red), inset 0 0 10px var(--neon-red); }
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-blue));
+            width: 0%;
+            transition: width 0.5s ease-out;
+            border-radius: 15px 0 0 15px; /* Consistent with container */
+        }
+
+        .progress-text {
+            margin-top: 10px; /* Adjusted margin */
+            font-size: 1em; /* Smaller font size */
+            color: var(--text-main);
+            font-family: var(--font-accent);
+            letter-spacing: 1px; /* Slightly less spacing */
+            animation: text-flicker 1.5s infinite alternate;
+        }
+         @keyframes text-flicker {
+            0%, 100% { text-shadow: 0 0 4px var(--neon-blue); opacity: 0.9; }
+            50% { text-shadow: 0 0 8px var(--neon-blue), 0 0 12px var(--neon-blue); opacity: 1; }
+        }
+
+        /* --- Main Content Styles --- */
+        .main-content {
+            opacity: 0;
+            transition: opacity 1s ease-out 1s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* --- Header --- */
+        .header {
+            width: 100%;
+            padding: 15px 0; /* Smaller padding */
+            margin-bottom: 40px; /* Adjusted margin */
+            text-align: center;
+            animation: header-entry 1.2s ease-out;
+        }
+        @keyframes header-entry {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .header-image {
+            width: 120px; /* Smaller header image */
+            height: 120px; /* Smaller header image */
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px; /* Adjusted margin */
+            border: 5px solid var(--neon-blue); /* Thinner border */
+            box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); /* Smaller glow */
+            animation: header-img-pulse 5s infinite alternate ease-in-out;
+        }
+         @keyframes header-img-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); opacity: 0.9; }
+            50% { transform: scale(1.04); box-shadow: 0 0 25px var(--neon-blue), 0 0 50px var(--neon-blue); opacity: 1; }
+            100% { transform: scale(1); box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); opacity: 0.9; }
+        }
+
+        .header h1 {
+            font-family: var(--font-accent);
+            font-size: 2.8em; /* Smaller title */
+            margin: 0;
+            color: var(--text-main);
+            text-shadow: 0 0 8px var(--neon-red), 0 0 15px var(--neon-red),
+                         0 0 25px var(--neon-blue); /* Smaller glow */
+            letter-spacing: 2px; /* Slightly less spacing */
+            animation: title-flash 2s infinite;
+        }
+        @keyframes title-flash {
+            0%, 100% { text-shadow: 0 0 8px var(--neon-red), 0 0 15px var(--neon-red), 0 0 25px var(--neon-blue); opacity: 1; }
+            50% { text-shadow: 0 0 12px var(--neon-red), 0 0 25px var(--neon-red), 0 0 35px var(--neon-blue); opacity: 0.9; }
+        }
+
+        /* --- Main Container --- */
+        .container {
+            background: rgba(10, 0, 26, 0.9);
+            padding: 40px; /* Smaller padding */
+            border-radius: 20px; /* Slightly less rounded */
+            max-width: 800px; /* Slightly narrower */
+            width: 95%;
+            text-align: left;
+            animation: container-entry 1s ease-out 0.5s forwards;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        @keyframes container-entry {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* --- Section Titles --- */
+        h2 {
+            font-family: var(--font-accent);
+            font-size: 1.8em; /* Smaller titles */
+            margin-top: 40px; /* Adjusted margin */
+            margin-bottom: 20px; /* Adjusted margin */
+            color: var(--neon-red);
+            letter-spacing: 1.5px; /* Slightly less spacing */
+            text-shadow: 0 0 6px var(--neon-red), 0 0 12px var(--neon-red); /* Smaller glow */
+            position: relative;
+        }
+        h2:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -6px; /* Adjusted position */
+            width: 50px; /* Smaller width */
+            height: 2px; /* Thinner */
+            background: linear-gradient(to right, var(--neon-red), var(--neon-blue));
+            border-radius: 4px; /* Slightly less rounded */
+        }
+        h2:nth-of-type(even) {
+            color: var(--neon-blue);
+            text-shadow: 0 0 6px var(--neon-blue), 0 0 12px var(--neon-blue);
+        }
+        h2:nth-of-type(even):before {
+             background: linear-gradient(to right, var(--neon-blue), var(--neon-red));
+        }
+
+        /* --- Info Table --- */
+        .info-table {
+            width: 100%;
+            margin-bottom: 30px; /* Adjusted margin */
+            border-collapse: collapse;
+            font-size: 0.9em; /* Smaller text */
+        }
+
+        .info-table th,
+        .info-table td {
+            padding: 10px 12px; /* Smaller padding */
+            text-align: left;
+            border-bottom: 1px solid #303030; /* Subtler separator */
+        }
+
+        .info-table th {
+            font-weight: 700;
+            color: var(--neon-red);
+            font-family: var(--font-accent);
+            letter-spacing: 0.8px; /* Slightly less spacing */
+            text-shadow: 0 0 4px var(--neon-red); /* Smaller glow */
+        }
+        .info-table td {
+            color: var(--text-main);
+            font-weight: 400;
+            letter-spacing: 0.7px; /* Slightly less spacing */
+            transition: all 0.3s ease;
+        }
+        .info-table td:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 6px var(--neon-blue); /* Smaller glow */
+            transform: translateX(4px); /* Smaller slide */
+        }
+
+        /* --- Skills & Tech Stack Sections --- */
+        .skills-section, .tech-stack-section {
+            margin-top: 25px; /* Smaller margin */
+        }
+
+        .styled-list {
+            list-style: none;
+            padding: 0;
+            font-size: 0.9em; /* Smaller text */
+        }
+
+        .styled-list li {
+            margin-bottom: 12px; /* Smaller margin */
+            padding-left: 25px; /* Smaller indent */
+            position: relative;
+            animation: listItemEntry 0.7s ease-out forwards;
+            opacity: 0;
+        }
+        .styled-list li:nth-child(1) { animation-delay: 0.1s; }
+        .styled-list li:nth-child(2) { animation-delay: 0.2s; }
+        .styled-list li:nth-child(3) { animation-delay: 0.3s; }
+        .styled-list li:nth-child(4) { animation-delay: 0.4s; }
+        .styled-list li:nth-child(5) { animation-delay: 0.5s; }
+        .styled-list li:nth-child(6) { animation-delay: 0.6s; }
+        .styled-list li:nth-child(7) { animation-delay: 0.7s; }
+        .styled-list li:nth-child(8) { animation-delay: 0.8s; }
+        .styled-list li:nth-child(9) { animation-delay: 0.9s; }
+        .styled-list li:nth-child(10) { animation-delay: 1.0s; }
+        .styled-list li:nth-child(11) { animation-delay: 1.1s; }
+        .styled-list li:nth-child(12) { animation-delay: 1.2s; }
+
+        @keyframes listItemEntry {
+            from { opacity: 0; transform: translateX(-15px); } /* Smaller slide */
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .styled-list li:before {
+            content: '\f0da'; /* Font Awesome arrow icon */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: var(--neon-red);
+            position: absolute;
+            left: 0;
+            top: 1px; /* Adjusted position */
+            animation: bullet-pulse 1.5s infinite alternate ease-in-out;
+            font-size: 0.9em; /* Smaller bullet */
+        }
+        .styled-list li:nth-child(odd):before {
+             color: var(--neon-blue);
+        }
+         @keyframes bullet-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 4px var(--neon-red); }
+            100% { transform: scale(1.1); text-shadow: 0 0 8px var(--neon-red), 0 0 12px var(--neon-red); } /* Smaller pulse */
+        }
+        .styled-list li:nth-child(odd):before {
+             animation: bullet-pulse-blue 1.5s infinite alternate ease-in-out;
+        }
+        @keyframes bullet-pulse-blue {
+             0% { transform: scale(1); text-shadow: 0 0 4px var(--neon-blue); }
+            100% { transform: scale(1.1); text-shadow: 0 0 8px var(--neon-blue), 0 0 12px var(--neon-blue); } /* Smaller pulse */
+        }
+
+        .styled-list li:hover {
+            color: var(--neon-blue);
+            text-shadow: 0 0 8px var(--neon-blue); /* Smaller glow */
+            transform: translateX(6px); /* Smaller slide */
+        }
+
+        /* --- Channels Section (Empty as per new details) --- */
+        /* You can remove this section if it's truly not needed, or repurpose it */
+        .channels-section {
+            display: none; /* Hide if no channels are to be displayed */
+        }
+
+        /* --- Footer --- */
+        .footer-section {
+            margin-top: 50px; /* Adjusted margin */
+            padding-top: 25px; /* Adjusted padding */
+            border-top: 1px dashed var(--neon-blue); /* Thinner border */
+            width: 75%; /* Slightly narrower */
+            text-align: center;
+            animation: footer-fade-in 1.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes footer-fade-in {
+            from { opacity: 0; transform: translateY(15px); } /* Smaller slide */
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-text {
+            font-family: var(--font-heading);
+            font-size: 1.6em; /* Smaller footer text */
+            color: var(--text-main);
+            text-shadow: 0 0 8px var(--neon-blue); /* Smaller glow */
+            margin-bottom: 8px; /* Adjusted margin */
+        }
+
+        .footer-subtext {
+            font-size: 0.85em; /* Smaller subtext */
+            color: var(--text-secondary);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+            body { font-size: 0.9em; }
+            .header h1 { font-size: 2.5em; }
+            .header-image { width: 100px; height: 100px; }
+            .container { padding: 30px; }
+            h2 { font-size: 1.6em; }
+            .info-table { font-size: 0.85em; }
+            .styled-list { font-size: 0.85em; }
+            .footer-text { font-size: 1.4em; }
+            .footer-subtext { font-size: 0.8em; }
+            .progress-bar-container { width: 85%; }
+            .animated-element-img { width: 110px; height: 110px; }
+        }
+        @media (max-width: 768px) {
+            body { font-size: 0.85em; }
+            .header h1 { font-size: 2.2em; }
+            .header-image { width: 90px; height: 90px; }
+            .container { padding: 25px; }
+            h2 { font-size: 1.4em; margin-top: 30px; }
+            .info-table th, .info-table td { padding: 8px 10px; }
+            .styled-list li { margin-bottom: 10px; padding-left: 20px; }
+            .footer-text { font-size: 1.2em; }
+            .footer-subtext { font-size: 0.75em; }
+            .progress-bar-container { width: 90%; }
+            .animated-element-img { width: 90px; height: 90px; }
+            .progress-text { font-size: 0.9em; }
+        }
+        @media (max-width: 480px) {
+            body { font-size: 0.8em; }
+            .header h1 { font-size: 1.8em; }
+            .header-image { width: 70px; height: 70px; margin-bottom: 8px; }
+            .container { padding: 20px; }
+            h2 { font-size: 1.2em; margin-top: 20px; margin-bottom: 12px; }
+            .styled-list li { margin-bottom: 8px; padding-left: 18px; }
+            .info-table th, .info-table td { padding: 5px 6px; font-size: 0.85em; }
+            .footer-text { font-size: 1em; }
+            .footer-subtext { font-size: 0.7em; }
+            .progress-bar-container { width: 95%; height: 20px; }
+            .animated-element-img { width: 70px; height: 70px; }
+            .progress-text { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <img src="https://aichatpro.ru/file/CHxmFOlpgLLBStPJdoAIoBWAEtdAXH.jpg" alt="Logo" class="animated-element-img">
+        <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div id="progressText" class="progress-text">INITIALIZING...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+        <header class="header">
+             <img src="https://aichatpro.ru/file/CHxmFOlpgLLBStPJdoAIoBWAEtdAXH.jpg" alt="Logo" class="header-image">
+            <h1>SCARY</h1>
+        </header>
+
+        <div class="container">
+            <h2>P E R S O N A L   D A T A</h2>
+            <table class="info-table">
+                <tr>
+                    <th>N A M E</th>
+                    <td>SCARY</td>
+                </tr>
+                <tr>
+                    <th>U S E R N A M E</th>
+                    <td>@pahadi.69</td>
+                </tr>
+                <tr>
+                    <th>C A S T E</th>
+                    <td>HUMAN</td>
+                </tr>
+                <tr>
+                    <th>F R O M</th>
+                    <td>INDIA, UTTARAKHAND</td>
+                </tr>
+                <tr>
+                    <th>S T U D Y I N G</th>
+                    <td>CYBER SECURITY</td>
+                </tr>
+                <tr>
+                    <th>A G E</th>
+                    <td>18</td>
+                </tr>
+            </table>
+
+            <section class="skills-section">
+                <h2>S K I L L S</h2>
+                <ul class="styled-list">
+                    <li>> CARDERS</li>
+                    <li>> BANNERS</li>
+                    <li>> TOOLS / DATA / COURSES / TRIAL / PLANS / PREMIUM SELLERS</li>
+                    <li>> PEN TESTERS</li>
+                    <li>> BUG BOUNTY</li>
+                    <li>> SQL INJECTION</li>
+                    <li>> ALL ROUNDER</li>
+                    <li>> VIRUS SELLER</li>
+                    <li>> HACKING TOOLS CODER</li>
+                    <li>> TROJAN PROGRAMMER</li>
+                    <li>> HACKED ACCOUNTS SELLER</li>
+                </ul>
+            </section>
+
+            <section class="tech-stack-section">
+                <h2>T E C H S T A C K</h2>
+                <ul class="styled-list">
+                    <li>> HTML</li>
+                    <li>> CSS</li>
+                    <li>> JAVASCRIPT</li>
+                    <li>> PYTHON</li>
+                    <li>> PHP</li>
+                    <li>> JAVA</li>
+                    <li>> SQL / NoSQL</li>
+                    <li>> DOCKER / KUBERNETES</li>
+                    <li>> LINUX / BASH</li>
+                </ul>
+            </section>
+        </div>
+
+        <section class="footer-section">
+            <p class="footer-text">ENTER THE SHADOWS</p>
+            <p class="footer-subtext">CYBER GHOST IN THE MACHINE</p>
+        </section>
+    </div>
+
+    <script>
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        // Define loading stages with text and duration
+        const loadingStages = [
+            { text: "INITIALIZING...", duration: 1200, progressEnd: 40 },
+            { text: "CONNECTING TO SERVER...", duration: 1800, progressEnd: 80 },
+            { text: "WEB INTERFACE READY...", duration: 1000, progressEnd: 100 }
+        ];
+
+        let currentStageIndex = 0;
+        let totalProgressTime = 0;
+
+        // Calculate total duration for progress bar
+        for (let i = 0; i < loadingStages.length; i++) {
+            totalProgressTime += loadingStages[i].duration;
+        }
+
+        function runLoadingStage(stage) {
+            progressText.textContent = stage.text;
+            progressBar.style.width = stage.progressEnd + '%';
+        }
+
+        // Start the loading sequence
+        function startLoadingSequence() {
+            let cumulativeDelay = 0;
+            for (let i = 0; i < loadingStages.length; i++) {
+                const stage = loadingStages[i];
+                setTimeout(() => {
+                    runLoadingStage(stage);
+                    if (i === loadingStages.length - 1) {
+                        // This is the last stage, fade out loading screen after its duration
+                        setTimeout(() => {
+                            loadingScreen.classList.add('hidden');
+                            mainContent.classList.add('visible');
+                        }, stage.duration);
+                    }
+                }, cumulativeDelay);
+                cumulativeDelay += stage.duration;
+            }
+        }
+
+        // Trigger the loading sequence when the page loads
+        window.onload = startLoadingSequence;
+
+        // Fallback in case JS fails or is too slow to trigger visibility
+        setTimeout(() => {
+            if (!loadingScreen.classList.contains('hidden')) {
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.add('visible');
+            }
+        }, totalProgressTime + 800); /* Total duration + a little extra */
+
+    </script>
+</body>
+</html>
